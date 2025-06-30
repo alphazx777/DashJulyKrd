@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Дашборд КРД АСП - Июнь 2025</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .kpi-container { display: flex; justify-content: center; gap: 20px; margin: 20px; }
+        .kpi { background-color: #f9f9f9; padding: 15px; border-radius: 5px; width: 20%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chart { margin: 30px auto; width: 80%; }
+        h1 { color: #333; }
+        h3 { margin: 10px 0; color: #555; }
+        p { font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Дашборд КРД АСП - Июнь 2025</h1>
+
+    <!-- KPI -->
+    <div class="kpi-container">
+        <div class="kpi">
+            <h3>Общии КМ</h3>
+            <p>2,550,400</p>
+        </div>
+        <div class="kpi">
+            <h3>Выполнение плана</h3>
+            <p>93%</p>
+        </div>
+        <div class="kpi">
+            <h3>Среднии КМ уд.</h3>
+            <p>91,086</p>
+        </div>
+        <div class="kpi">
+            <h3>Звонки / ВПЗ</h3>
+            <p>33 / 16</p>
+        </div>
+    </div>
+
+    <!-- Графики -->
+    <div id="plan-fact" class="chart"></div>
+    <div id="km-pie" class="chart"></div>
+    <div id="credit-tradein" class="chart"></div>
+    <div id="calls-vpz" class="chart"></div>
+
+    <script>
+        // Данные
+        const data = {
+            fio: ['Гаштов А.', 'Вакансия', 'ОПНА', 'Итог'],
+            plan: [15, 15, 0, 30],
+            fact: [25, 0, 3, 28],
+            km_iron: [1760000, 0, 13000, 1773000],
+            km_noniron: [408400, 0, 369000, 777400],
+            credit: [12, 0, 100, 21],
+            tradein: [8, 0, 100, 18],
+            calls: [31, 0, 2, 33],
+            vpz: [14, 0, 2, 16]
+        };
+
+        // График 1: План vs Факт
+        Plotly.newPlot('plan-fact', [
+            { x: data.fio, y: data.plan, type: 'bar', name: 'План', marker: { color: '#1f77b4' } },
+            { x: data.fio, y: data.fact, type: 'bar', name: 'Факт', marker: { color: '#ff7f0e' } }
+        ], {
+            title: 'План vs Факт',
+            barmode: 'group',
+            xaxis: { title: 'ФИО' },
+            yaxis: { title: 'Количество' },
+            margin: { t: 50 }
+        });
+
+        // График 2: Доля КМ железо vs нежелезо
+        Plotly.newPlot('km-pie', [{
+            values: [data.km_iron.reduce((a, b) => a + b, 0), data.km_noniron.reduce((a, b) => a + b, 0)],
+            labels: ['КМ железо', 'КМ нежелезо'],
+            type: 'pie',
+            marker: { colors: ['#2ca02c', '#d62728'] }
+        }], {
+            title: 'Доля КМ железо vs нежелезо',
+            margin: { t: 50 }
+        });
+
+        // График 3: Кредит и Trade-In
+        Plotly.newPlot('credit-tradein', [
+            { x: data.fio, y: data.credit, type: 'bar', name: 'Кредит %', marker: { color: '#9467bd' } },
+            { x: data.fio, y: data.tradein, type: 'bar', name: 'Trade-In %', marker: { color: '#8c564b' } }
+        ], {
+            title: 'Кредит и Trade-In (%)',
+            barmode: 'group',
+            xaxis: { title: 'ФИО' },
+            yaxis: { title: 'Процент' },
+            margin: { t: 50 }
+        });
+
+        // График 4: Звонки и ВПЗ
+        Plotly.newPlot('calls-vpz', [
+            { x: data.fio, y: data.calls, type: 'bar', name: 'Звонки+инт', marker: { color: '#e377c2' } },
+            { x: data.fio, y: data.vpz, type: 'bar', name: 'ВПЗ', marker: { color: '#7f7f7f' } }
+        ], {
+            title: 'Звонки и ВПЗ',
+            barmode: 'group',
+            xaxis: { title: 'ФИО' },
+            yaxis: { title: 'Количество' },
+            margin: { t: 50 }
+        });
+    </script>
+</body>
+</html>
